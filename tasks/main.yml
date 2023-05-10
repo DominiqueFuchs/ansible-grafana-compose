@@ -42,17 +42,19 @@
 
 - name: Ensure Loki Compose bind mount directories exist
   ansible.builtin.file:
-    path: '{{ item }}'
+    path: '{{ item.path }}'
     state: directory
-    owner: '{{ lc_service_user }}'
+    owner: '{{ item.owner }}'
     group: '{{ lc_service_user }}'
     mode: '0750'
   loop:
-    - '{{ lc_loki_bind_mount_dir_sanitized }}'
-    - '{{ lc_grafana_bind_mount_dir_sanitized }}'
-  when: item
+    - path: '{{ lc_loki_bind_mount_dir_sanitized }}'
+      owner: 10001
+    - path: '{{ lc_grafana_bind_mount_dir_sanitized }}'
+      owner: 472
+  when: item.path
 
-- name: Ensure Loki Compose file exists is up to date
+- name: Ensure Loki Compose file exists and is up to date
   ansible.builtin.template:
     src: compose.yaml.j2
     dest: '{{ lc_base_directory_sanitized }}/LokiCompose/compose.yaml'
