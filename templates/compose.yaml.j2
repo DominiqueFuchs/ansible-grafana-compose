@@ -1,0 +1,120 @@
+networks:
+  grafana-stack:
+
+services:
+  alertmanager:
+    image: prom/alertmanager:latest
+    ports:
+      - '127.0.0.1:9093:9093'
+    command: --config.file=/etc/alertmanager/config.yaml
+    networks:
+      - grafana-stack
+    volumes:
+      - ./config/alertmanager.yaml:/etc/alertmanager/config.yaml:ro
+
+  loki:
+    image: grafana/loki:2.8.2
+    ports:
+      - '{{ lc_loki_bind_address }}:3100:3100'
+    command: -config.file=/etc/loki/config.yaml
+    networks:
+      - grafana-stack
+    volumes:
+      - ./config/loki.yaml:/etc/loki/config.yaml:ro
+    depends_on:
+        - alertmanager
+
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      GF_PATHS_PROVISIONING: /etc/grafana/provisioning
+      GF_AUTH_ANONYMOUS_ENABLED: false
+      GF_SECURITY_ADMIN_USER: grafana_admin
+      GF_SECURITY_ADMIN_PASSWORD: '${GRAFANA_PASSWORD}'
+{% if lc_enable_acme_proxy %}
+      VIRTUAL_HOST: '{{ lc_grafana_vhost }}'
+      VIRTUAL_PORT: 3000
+      LETSENCRYPT_HOST: '{{ lc_grafana_vhost }}'
+      LETSENCRYPT_TEST: {{ lc_letsencrypt_test | to_json }}
+{% endif %}
+    entrypoint:
+      - sh
+      - -euc
+      - |
+        mkdir -p /etc/grafana/provisioning/datasources
+        cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
+        apiVersion: 1
+        datasources:
+        - name: Loki
+          type: loki
+          access: proxy 
+          orgId: 1
+          url: http://loki:3100
+          basicAuth: false
+          isDefault: true
+          version: 1
+          editable: false
+        EOF
+        /run.sh
+{% if lc_enable_acme_proxy %}
+    expose:
+      - 3000
+{% else %}
+    ports:
+        - '{{ lc_grafana_bind_address }}:3000:3000'
+{% endif %}
+    networks:
+      - grafana-stack
+    volumes:
+      - grafana-data:/var/lib/grafana/
+    depends_on:
+        - loki
+{% if lc_enable_acme_proxy %}
+
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy:latest
+    labels:
+        - 'com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy'
+    volumes:
+        - certs:/etc/nginx/certs:ro
+        - nginx-conf:/etc/nginx/conf.d
+        - nginx-html:/usr/share/nginx/html
+        - nginx-vhost:/etc/nginx/vhost.d
+        - /var/run/docker.sock:/tmp/docker.sock:ro
+    environment:
+        TRUST_DOWNSTREAM_PROXY: false
+        DEFAULT_HOST: '{{ lc_grafana_vhost }}'
+    networks: 
+        - grafana-stack
+    ports:
+        - '{{ lc_nginx_bind_address }}:80:80'
+        - '{{ lc_nginx_bind_address }}:443:443'
+    depends_on:
+        - grafana
+
+  acme:
+      image: nginxproxy/acme-companion:latest
+      container_name: grafana-stack-acme-helper
+      volumes_from:
+          - nginx-proxy
+      volumes:
+          - acme:/etc/acme.sh
+          - certs:/etc/nginx/certs:rw
+          - /var/run/docker.sock:/var/run/docker.sock:ro
+      environment:
+          DEFAULT_EMAIL: '${ACME_EMAIL}'
+      networks: 
+          - grafana-stack
+      depends_on:
+          - nginx-proxy
+{% endif %}
+
+volumes:
+{% if lc_enable_acme_proxy %}
+    acme:
+    certs:
+    nginx-conf:
+    nginx-html:
+    nginx-vhost:
+{% endif %}
+    grafana-data:

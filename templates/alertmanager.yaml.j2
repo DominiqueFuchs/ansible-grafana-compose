@@ -1,0 +1,10 @@
+route:
+  receiver: '{{ lc_alertmanager_default_receiver }}'
+  group_by: [ alertname ]
+
+receivers:
+{% if lc_alertmanager_receivers %}
+  {{ lc_alertmanager_receivers | to_json }}
+{% else %}
+  - name: 'black-hole'
+{% endif %}

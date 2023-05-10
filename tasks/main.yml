@@ -1,0 +1,86 @@
+---
+- name: Load OS-specific variable file
+  ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
+  vars:
+    params:
+      files:
+        - '{{ ansible_distribution }}.yml'
+        - '{{ ansible_os_family }}.yml'
+        - main.yml
+      paths:
+        - vars
+
+- name: Determine docker binary path
+  ansible.builtin.command: command -v docker
+  register: lc_command_docker_result
+  when: not lc_docker_bin_dir
+  changed_when: false
+
+- name: Setting docker binary path
+  ansible.builtin.set_fact: lc_docker_bin_dir='{{ lc_command_docker_result.stdout }}'
+  changed_when: false
+  when: not lc_docker_bin_dir
+
+- name: Ensure docker binary path is set
+  ansible.builtin.assert:
+    that:
+      - lc_docker_bin_dir
+    msg: Binary path for docker was not found. Please check your docker installation or specify the corresponding role variable 'lc_docker_bin_dir'.
+    quiet: true
+
+- name: Ensure Loki Compose serving directories exist
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: directory
+    owner: '{{ lc_service_user }}'
+    group: '{{ lc_service_user }}'
+    mode: '0750'
+  loop:
+    - '{{ lc_base_directory_sanitized }}/LokiCompose'
+    - '{{ lc_base_directory_sanitized }}/LokiCompose/config'
+
+- name: Ensure Loki Compose file exists is up to date
+  ansible.builtin.template:
+    src: compose.yaml.j2
+    dest: '{{ lc_base_directory_sanitized }}/LokiCompose/compose.yaml'
+    owner: '{{ lc_service_user }}'
+    group: '{{ lc_service_user }}'
+    mode: '0640'
+
+- name: Ensure .env and configuration files exist and are up to date
+  ansible.builtin.template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    owner: '{{ lc_service_user }}'
+    group: '{{ item.group }}'
+    mode: '{{ item.mode }}'
+  loop:
+    - src: .env.j2
+      dest: '{{ lc_base_directory_sanitized }}/LokiCompose/.env'
+      group: '{{ lc_service_user }}'
+      mode: '600'
+    - src: alertmanager.yaml.j2
+      dest: '{{ lc_base_directory_sanitized }}/LokiCompose/config/alertmanager.yaml'
+      group: 65534
+      mode: '640'
+    - src: loki.yaml.j2
+      dest: '{{ lc_base_directory_sanitized }}/LokiCompose/config/loki.yaml'
+      group: 10001
+      mode: '640'
+
+- name: Ensure Loki Compose system service unit exists
+  ansible.builtin.template:
+    src: loki-compose.service.j2
+    dest: /etc/systemd/system/loki-compose.service
+    owner: root
+    group: root
+    mode: '0644'
+  when: lc_service_manage | bool
+
+- name: Ensure Loki Compose service is enabled and started
+  ansible.builtin.systemd:
+    name: loki-compose
+    daemon_reload: true
+    state: '{{ lc_service_state }}'
+    enabled: '{{ lc_service_enabled }}'
+  when: lc_service_manage | bool

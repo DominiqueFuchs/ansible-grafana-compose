@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  pre_tasks:
+    - name: Install docker
+      ansible.builtin.include_role:
+        name: geerlingguy.docker
+
+  roles:
+    - role: dfuchs.loki_compose

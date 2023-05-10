@@ -1,0 +1,4 @@
+---
+lc_base_directory_sanitized: '{{ lc_base_directory | regex_replace("\/$", "") }}'
+lc_docker_bin_dir_sanitized: '{{ lc_docker_bin_dir | regex_replace("\/$", "") }}'
+lc_compose_command: '{{ "docker compose" if lc_compose_major_version == 2 else "docker-compose"}}'

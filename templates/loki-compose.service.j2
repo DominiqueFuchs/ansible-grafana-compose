@@ -1,0 +1,18 @@
+[Unit]
+Description=Loki Compose Grafana Stack
+Requires=docker.service
+After=docker.service
+
+[Service]
+{% if lc_service_user != 'root' %}
+User={{ lc_service_user }}
+{% endif %}
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory={{ lc_base_directory_sanitized }}/LokiCompose
+ExecStart={{ lc_docker_bin_dir_sanitized }}/{{ lc_compose_command }} up -d
+ExecStop={{ lc_docker_bin_dir_sanitized }}/{{ lc_compose_command }} compose down
+TimeoutStartSec=0
+
+[Install]
+WantedBy=multi-user.target
