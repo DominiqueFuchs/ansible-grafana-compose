@@ -35,7 +35,7 @@ services:
       VIRTUAL_HOST: '{{ lc_grafana_vhost }}'
       VIRTUAL_PORT: 3000
       LETSENCRYPT_HOST: '{{ lc_grafana_vhost }}'
-      LETSENCRYPT_TEST: {{ lc_letsencrypt_test | to_json }}
+      LETSENCRYPT_TEST: {{ lc_letsencrypt_test_mode | to_json }}
 {% endif %}
     entrypoint:
       - sh

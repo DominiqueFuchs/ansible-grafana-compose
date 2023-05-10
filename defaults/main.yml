@@ -12,8 +12,8 @@ lc_grafana_password: 'p@ssword_to_be_replaced'
 
 lc_enable_acme_proxy: true
 lc_nginx_bind_address: '0.0.0.0'
+lc_letsencrypt_test_mode: true
 lc_acme_mail: 'admin@example.tld'
-lc_letsencrypt_test: true
 
 lc_alertmanager_default_receiver: 'black-hole'
 lc_alertmanager_receivers: ''
