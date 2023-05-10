@@ -17,7 +17,8 @@
   changed_when: false
 
 - name: Setting docker binary path
-  ansible.builtin.set_fact: lc_docker_bin_dir='{{ lc_command_docker_result.stdout }}'
+  ansible.builtin.set_fact:
+    lc_docker_bin_dir: '{{ lc_command_docker_result.stdout }}'
   changed_when: false
   when: not lc_docker_bin_dir
 
