@@ -1,4 +1,5 @@
 [![CI](https://github.com/DominiqueFuchs/ansible-loki-compose/actions/workflows/ci.yaml/badge.svg?branch=main&event=push)](https://github.com/DominiqueFuchs/ansible-loki-compose/actions/workflows/ci.yaml)
+![Ansible Role](https://img.shields.io/ansible/role/62267?label=galaxy&logo=ansible)
 
 Role Name
 =========
