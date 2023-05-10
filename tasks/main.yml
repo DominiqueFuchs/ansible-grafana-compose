@@ -53,6 +53,8 @@
   when: item
 
 - name: Ensure Loki Compose file exists is up to date
+
+- name: Ensure Loki Compose file exists and is up to date
   ansible.builtin.template:
     src: compose.yaml.j2
     dest: '{{ lc_base_directory_sanitized }}/LokiCompose/compose.yaml'
