@@ -21,6 +21,9 @@ services:
       - grafana-stack
     volumes:
       - ./config/loki.yaml:/etc/loki/config.yaml:ro
+{% if lc_loki_bind_mount_dir_sanitized %}
+      - {{ lc_loki_bind_mount_dir_sanitized }}:/loki
+{% endif %}
     depends_on:
         - alertmanager
 
@@ -66,7 +69,11 @@ services:
     networks:
       - grafana-stack
     volumes:
+{% if lc_grafana_bind_mount_dir_sanitized %}
+      - {{ lc_grafana_bind_mount_dir_sanitized }}:/var/lib/grafana/
+{% else %}
       - grafana-data:/var/lib/grafana/
+{% endif %}
     depends_on:
         - loki
 {% if lc_enable_acme_proxy %}
@@ -117,4 +124,6 @@ volumes:
     nginx-html:
     nginx-vhost:
 {% endif %}
+{% if lc_grafana_bind_mount_dir_sanitized %}
     grafana-data:
+{% endif %}
