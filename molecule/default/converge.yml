@@ -9,4 +9,4 @@
         name: geerlingguy.docker
 
   roles:
-    - role: dfuchs.loki_compose
+    - role: dominiquefuchs.loki_compose

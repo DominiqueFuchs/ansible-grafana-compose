@@ -55,7 +55,7 @@ With a working docker compose (v2) setup on the target, the shortest (but by rel
 
     - hosts: all
       roles:
-        - role: dfuchs.loki_compose
+        - role: dominiquefuchs.loki_compose
           vars:
             lc_enable_acme_proxy: false
 
@@ -74,7 +74,7 @@ Which gives:
 
     - hosts: all
       roles:
-        - role: dfuchs.loki_compose
+        - role: dominiquefuchs.loki_compose
           vars:
             lc_service_user: loki
             lc_grafana_vhost: your.domain.tld
