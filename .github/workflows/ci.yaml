@@ -37,12 +37,6 @@ jobs:
       matrix:
         image:
           - dfuchs/alma-9-ansible
-        playbook:
-          - converge_default.yml
-          - converge_systemd_enabled.yml
-          - converge_service_user.yml
-          - converge_acme_proxy_disabled.yml
-          - converge_bind_mounts.yml
 
     steps:
       - name: Check out the codebase
@@ -56,10 +50,42 @@ jobs:
       - name: Install test dependencies
         run: pip3 install ansible ansible-lint molecule molecule-plugins[docker] docker && ansible-galaxy install geerlingguy.docker
 
-      - name: Run Molecule tests
+      - name: Run Molecule tests (default)
         run: molecule test
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_IMAGE: ${{ matrix.image }}
-          MOLECULE_PLAYBOOK: ${{ matrix.playbook }}
+          MOLECULE_PLAYBOOK: converge_default.yml
+
+      - name: Run Molecule tests (systemd service)
+        run: molecule test
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
+          MOLECULE_IMAGE: ${{ matrix.image }}
+          MOLECULE_PLAYBOOK: converge_systemd_enabled.yml
+
+      - name: Run Molecule tests (service user)
+        run: molecule test
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
+          MOLECULE_IMAGE: ${{ matrix.image }}
+          MOLECULE_PLAYBOOK: converge_service_user.yml
+
+      - name: Run Molecule tests (proxy disabled)
+        run: molecule test
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
+          MOLECULE_IMAGE: ${{ matrix.image }}
+          MOLECULE_PLAYBOOK: converge_service_user.yml
+
+      - name: Run Molecule tests (bind mounts)
+        run: molecule test
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
+          MOLECULE_IMAGE: ${{ matrix.image }}
+          MOLECULE_PLAYBOOK: converge_bind_mounts.yml
