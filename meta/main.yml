@@ -10,7 +10,7 @@ galaxy_info:
 
   platforms:
   - name: EL
-    versions: ['9']
+    versions: ['8', '9']
 
   galaxy_tags:
     - alertmanager
