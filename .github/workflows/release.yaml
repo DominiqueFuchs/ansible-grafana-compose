@@ -6,6 +6,9 @@ on:
       - '*'
 
 jobs:
+  ci-compliance:
+    uses: DominiqueFuchs/ansible-loki-compose/.github/workflows/ci.yaml@main
+
   release:
     name: Release
     runs-on: ubuntu-latest
