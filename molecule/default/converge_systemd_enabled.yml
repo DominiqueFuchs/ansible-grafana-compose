@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  roles:
+    - role: dominiquefuchs.loki_compose
+      vars:
+        lc_service_manage: true

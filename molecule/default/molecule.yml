@@ -8,7 +8,7 @@ lint: |
   ansible-lint .
 platforms:
   - name: instance
-    image: dfuchs/alma-9-ansible:latest
+    image: ${MOLECULE_IMAGE:-dfuchs/alma-9-ansible}:latest
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
@@ -17,5 +17,21 @@ platforms:
     pre_build_image: true
 provisioner:
   name: ansible
+  playbooks:
+    converge: ${MOLECULE_PLAYBOOK:-converge_default.yml}
+scenario:
+  test_sequence:
+#    - dependency
+#    - cleanup
+    - destroy
+    - syntax
+    - create
+#    - prepare
+    - converge
+    - idempotence
+#    - side_effect
+    - verify
+#    - cleanup
+    - destroy
 verifier:
   name: ansible

@@ -36,7 +36,13 @@ jobs:
     strategy:
       matrix:
         image:
-          - almalinux/9-init
+          - dfuchs/alma-9-ansible
+        playbook:
+          - converge_default.yml
+          - converge_systemd_enabled.yml
+          - converge_service_user.yml
+          - converge_acme_proxy_disabled.yml
+          - converge_bind_mounts.yml
 
     steps:
       - name: Check out the codebase
@@ -56,3 +62,4 @@ jobs:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_IMAGE: ${{ matrix.image }}
+          MOLECULE_PLAYBOOK: ${{ matrix.playbook }}

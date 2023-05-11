@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  roles:
+    - role: dominiquefuchs.loki_compose
+      vars:
+        lc_loki_bind_mount_dir: /mnt/loki-data
+        lc_grafana_bind_mount_dir: /mnt/grafana-data
