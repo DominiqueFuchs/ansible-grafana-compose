@@ -35,6 +35,7 @@ jobs:
     strategy:
       matrix:
         image:
+          - dfuchs/alma-8-ansible
           - dfuchs/alma-9-ansible
 
     steps:
