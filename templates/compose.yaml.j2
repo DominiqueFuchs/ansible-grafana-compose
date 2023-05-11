@@ -124,6 +124,6 @@ volumes:
     nginx-html:
     nginx-vhost:
 {% endif %}
-{% if lc_grafana_bind_mount_dir_sanitized %}
+{% if not lc_grafana_bind_mount_dir_sanitized %}
     grafana-data:
 {% endif %}

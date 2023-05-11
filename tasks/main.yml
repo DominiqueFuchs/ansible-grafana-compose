@@ -18,7 +18,7 @@
 
 - name: Setting docker binary path
   ansible.builtin.set_fact:
-    lc_docker_bin_dir: '{{ lc_command_docker_result.stdout }}'
+    lc_docker_bin_dir: '{{ lc_command_docker_result.stdout | dirname }}'
   changed_when: false
   when: not lc_docker_bin_dir
 
@@ -99,3 +99,4 @@
     state: '{{ lc_service_state }}'
     enabled: '{{ lc_service_enabled }}'
   when: lc_service_manage | bool
+  ignore_errors: true
