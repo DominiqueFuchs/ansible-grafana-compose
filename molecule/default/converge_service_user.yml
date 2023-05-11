@@ -4,7 +4,7 @@
   become: true
 
   pre_tasks:
-    - name : Ensure user exists
+    - name: Ensure user exists
       ansible.builtin.user:
         name: test_user
         groups: docker
