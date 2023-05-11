@@ -8,3 +8,4 @@
       vars:
         lc_loki_bind_mount_dir: /mnt/loki-data
         lc_grafana_bind_mount_dir: /mnt/grafana-data
+        lc_service_manage: true

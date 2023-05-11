@@ -14,3 +14,4 @@
     - role: dominiquefuchs.loki_compose
       vars:
         lc_service_user: test_user
+        lc_service_manage: true
