@@ -48,7 +48,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install test dependencies
-        run: pip3 install ansible ansible-lint molecule molecule-plugins[docker] docker
+        run: pip3 install --upgrade pip && pip3 install ansible ansible-lint molecule molecule-plugins[docker] docker
 
       - name: Downgrade requests to 2.29.0 (https://github.com/docker/docker-py/issues/3113)
         run: pip3 install requests==2.29.0 --force-reinstall
