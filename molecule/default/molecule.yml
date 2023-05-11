@@ -9,7 +9,6 @@ lint: |
 platforms:
   - name: instance
     image: dfuchs/alma-9-ansible:latest
-    # image: ${MOLECULE_IMAGE:-almalinux/9-init}
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
