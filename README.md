@@ -1,12 +1,12 @@
 [![CI](https://github.com/DominiqueFuchs/ansible-loki-compose/actions/workflows/ci.yaml/badge.svg?branch=main&event=push)](https://github.com/DominiqueFuchs/ansible-loki-compose/actions/workflows/ci.yaml)
-![Ansible Role](https://img.shields.io/ansible/role/62267?label=galaxy&logo=ansible)
+[![Ansible Role](https://img.shields.io/ansible/role/62267?label=galaxy&logo=ansible)](https://galaxy.ansible.com/dominiquefuchs/loki_compose)
 
 Role Name
 =========
 
 Ansible role to deploy production-ready (**as in** fully configured and safely architected/deployed ready-to-use unit - **not as in** scalable, elastic and highly-available architecture. There are [other setup options](https://grafana.com/docs/loki/latest/installation/) and [deployment modes](https://grafana.com/docs/loki/latest/fundamentals/architecture/deployment-modes/) that are more sophisticated and should be considered) Loki environments with Docker Compose.
 
-The deployed environment includes Loki, Grafana and Alertmanager services as well as (optional, enabled by default) nginx-proxy and ACME services to provide a proxied, SSL-enabled and Let's Encrypt validated web interface for Grafana. In every case, there exists only two individually configurable network bindings to the host-side (one for the Loki service and one for either for the proxy-service or for the Grafana service if the proxy service is disabled), all other communication is handled solely within the docker network that is set up by the compose file.
+The deployed environment includes Loki, Grafana and Alertmanager services as well as (optional, enabled by default) nginx-proxy and ACME services to provide a proxied, SSL-enabled web interface for Grafana. In every case, there exists only two individually configurable network bindings to the host-side (one for the Loki service and one for either for the proxy-service or for the Grafana service if the proxy service is disabled), all other communication is handled solely within the docker network that is set up by the compose file.
 
 While the the services itself are stateless in a sense that configuration is completely handled by the provided configuration options (and the generated configurations are bound read-only within the container), you can individually configure bind-mounts for Grafana (settings, dashboards, users, ...) and Loki (mostly index and chunk data if you're using a filesystem backend) in case you want to persist or back up the corresponding data locally.
 
