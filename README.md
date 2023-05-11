@@ -43,6 +43,8 @@ All variables used within this role (internal ones as well as defaults meant to 
 | lc_service_manage         | *false* — Enable or disable service creation and state control for systemd. The service name is loki-compose |
 | lc_service_state          | *started* — Set the desired service state to ensure. Possible values are 'started', 'stopped', 'restarted' and 'reloaded' |
 | lc_service_enabled        | *true* — Enable or disable the systemd service to run at startup |
+| lc_loki_bind_mount_dir    | *None* — |
+| lc_grafana_bind_mount_dir | *None* — |
 
 Dependencies
 ------------
