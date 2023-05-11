@@ -3,6 +3,13 @@
   hosts: all
   become: true
 
+  pre_tasks:
+    - name : Ensure user exists
+      ansible.builtin.user:
+        name: test_user
+        groups: docker
+        append: yes
+
   roles:
     - role: dominiquefuchs.loki_compose
       vars:
