@@ -10,7 +10,7 @@ galaxy_info:
 
   platforms:
   - name: Debian
-    versions: ['11']
+    versions: ['bullseye']
   - name: EL
     versions: ['8', '9']
 
