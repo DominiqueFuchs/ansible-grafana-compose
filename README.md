@@ -1,7 +1,9 @@
 [![CI](https://github.com/DominiqueFuchs/ansible-loki-compose/actions/workflows/ci.yaml/badge.svg?branch=main&event=push)](https://github.com/DominiqueFuchs/ansible-loki-compose/actions/workflows/ci.yaml)
 [![Ansible Role](https://img.shields.io/ansible/role/62267?label=galaxy&logo=ansible)](https://galaxy.ansible.com/dominiquefuchs/loki_compose)
 
-Role Name
+     ansible-galaxy install dominiquefuchs.loki_compose
+
+Ansible Role loki-compose
 =========
 
 Ansible role to deploy production-ready (**as in** fully configured and safely architected/deployed ready-to-use unit - **not as in** scalable, elastic and highly-available architecture. There are [other setup options](https://grafana.com/docs/loki/latest/installation/) and [deployment modes](https://grafana.com/docs/loki/latest/fundamentals/architecture/deployment-modes/) that are more sophisticated and should be considered) Loki environments with Docker Compose.
