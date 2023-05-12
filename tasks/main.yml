@@ -11,7 +11,7 @@
         - vars
 
 - name: Determine docker binary path
-  ansible.builtin.command: command -v docker
+  ansible.builtin.shell: command -v docker
   register: lc_command_docker_result
   when: not lc_docker_bin_dir
   changed_when: false
