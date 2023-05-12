@@ -37,6 +37,7 @@ jobs:
         image:
           - dfuchs/alma-8-ansible
           - dfuchs/alma-9-ansible
+          - dfuchs/debian-11-ansible
 
     steps:
       - name: Check out the codebase
