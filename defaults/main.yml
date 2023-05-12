@@ -20,6 +20,7 @@ lc_alertmanager_receivers: ''
 
 lc_loki_bind_mount_dir: ''
 lc_grafana_bind_mount_dir: ''
+lc_nginx_log_bind_mount_dir: ''
 
 lc_service_manage: false
 lc_service_state: started

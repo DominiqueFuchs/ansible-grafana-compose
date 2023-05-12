@@ -43,8 +43,9 @@ All variables used within this role (internal ones as well as defaults meant to 
 | lc_service_manage         | *false* — Enable or disable service creation and state control for systemd. The service name is loki-compose |
 | lc_service_state          | *started* — Set the desired service state to ensure. Possible values are 'started', 'stopped', 'restarted' and 'reloaded' |
 | lc_service_enabled        | *true* — Enable or disable the systemd service to run at startup |
-| lc_loki_bind_mount_dir    | *None* — |
-| lc_grafana_bind_mount_dir | *None* — |
+| lc_loki_bind_mount_dir    | *None* — Host directory to use for bind mount volume of the Loki containers data directory. If unset or empty, no named or bind mount volume will be created |
+| lc_grafana_bind_mount_dir | *None* — Host directory to use for bind mount volume of the Grafana containers data directory. If unset or empty, no named or bind mount volume will be created |
+| lc_nginx_log_bind_mount_dir | *None* — Host directory to use for bind mount volume of the nginx containers log directory. If unset or empty, no named or bind mount volume will be created |
 
 Dependencies
 ------------

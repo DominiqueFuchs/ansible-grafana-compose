@@ -52,6 +52,8 @@
       owner: 10001
     - path: '{{ lc_grafana_bind_mount_dir_sanitized }}'
       owner: 472
+    - path: '{{ lc_nginx_log_bind_mount_dir_sanitized }}'
+      owner: root
   when: item.path
 
 - name: Ensure Loki Compose file exists and is up to date
