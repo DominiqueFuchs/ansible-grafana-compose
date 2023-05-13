@@ -16,7 +16,7 @@ lc_letsencrypt_test_mode: true
 lc_acme_mail: 'admin@example.tld'
 
 lc_alertmanager_default_receiver: 'black-hole'
-lc_alertmanager_receivers: ''
+lc_alertmanager_receivers: []
 
 lc_loki_bind_mount_dir: ''
 lc_grafana_bind_mount_dir: ''

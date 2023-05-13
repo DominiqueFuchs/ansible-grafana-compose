@@ -11,8 +11,8 @@
         lc_alertmanager_receivers:
           - name: test-receiver
             telegram_configs:
-            - bot_token: '123456'
-              send_resolved: true
-              api_url: 'https://api.telegram.example'
-              chat_id: 123456
-              parse_mode: ''
+              - bot_token: '123456'
+                send_resolved: true
+                api_url: 'https://api.telegram.example'
+                chat_id: -123456
+                parse_mode: ''

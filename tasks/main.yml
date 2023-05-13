@@ -10,7 +10,7 @@
       paths:
         - vars
 
-- name: Determine docker binary path
+- name: Determine docker binary path # noqa command-instead-of-shell
   ansible.builtin.shell: command -v docker
   register: lc_command_docker_result
   when: not lc_docker_bin_dir

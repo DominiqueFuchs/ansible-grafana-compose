@@ -4,7 +4,8 @@ route:
 
 receivers:
 {% if lc_alertmanager_receivers %}
-  {{ lc_alertmanager_receivers | to_json }}
+{# to_nice_json because PyYAML is a freaking mess w/ dict lists and offsets #}
+  {{ lc_alertmanager_receivers | to_nice_json }}
 {% else %}
   - name: 'black-hole'
 {% endif %}
