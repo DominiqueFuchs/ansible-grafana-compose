@@ -98,6 +98,7 @@
     owner: '{{ lc_service_user }}'
     group: '{{ lc_service_user }}'
     mode: '644'
+    force: false
   when: lc_nginx_no_robots
 
 - name: Ensure Loki Compose system service unit exists
