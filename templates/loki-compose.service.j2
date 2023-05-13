@@ -11,7 +11,7 @@ Type=oneshot
 RemainAfterExit=yes
 WorkingDirectory={{ lc_base_directory_sanitized }}/LokiCompose
 ExecStart={{ lc_docker_bin_dir_sanitized }}/{{ lc_compose_command }} up -d
-ExecStop={{ lc_docker_bin_dir_sanitized }}/{{ lc_compose_command }} compose down
+ExecStop={{ lc_docker_bin_dir_sanitized }}/{{ lc_compose_command }} down
 TimeoutStartSec=0
 
 [Install]
