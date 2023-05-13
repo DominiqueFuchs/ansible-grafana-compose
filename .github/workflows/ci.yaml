@@ -94,7 +94,7 @@ jobs:
           MOLECULE_IMAGE: ${{ matrix.image }}
           MOLECULE_PLAYBOOK: converge_bind_mounts.yml
 
-      - name: Run Molecule tests (bind mounts)
+      - name: Run Molecule tests (alertmanager receivers)
         run: molecule test
         env:
           PY_COLORS: '1'
