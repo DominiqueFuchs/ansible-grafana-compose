@@ -1,5 +1,5 @@
 networks:
-  grafana-stack:
+  loki-compose:
 
 services:
   alertmanager:
@@ -8,7 +8,7 @@ services:
       - '127.0.0.1:9093:9093'
     command: --config.file=/etc/alertmanager/config.yaml
     networks:
-      - grafana-stack
+      - loki-compose
     volumes:
       - ./config/alertmanager.yaml:/etc/alertmanager/config.yaml:ro
 
@@ -18,7 +18,7 @@ services:
       - '{{ lc_loki_bind_address }}:3100:3100'
     command: -config.file=/etc/loki/config.yaml
     networks:
-      - grafana-stack
+      - loki-compose
     volumes:
       - ./config/loki.yaml:/etc/loki/config.yaml:ro
 {% if lc_loki_bind_mount_dir_sanitized %}
@@ -67,7 +67,7 @@ services:
         - '{{ lc_grafana_bind_address }}:3000:3000'
 {% endif %}
     networks:
-      - grafana-stack
+      - loki-compose
     volumes:
 {% if lc_grafana_bind_mount_dir_sanitized %}
       - {{ lc_grafana_bind_mount_dir_sanitized }}:/var/lib/grafana/
@@ -95,7 +95,7 @@ services:
         TRUST_DOWNSTREAM_PROXY: false
         DEFAULT_HOST: '{{ lc_grafana_vhost }}'
     networks: 
-        - grafana-stack
+        - loki-compose
     ports:
         - '{{ lc_nginx_bind_address }}:80:80'
         - '{{ lc_nginx_bind_address }}:443:443'
@@ -104,7 +104,7 @@ services:
 
   acme:
       image: nginxproxy/acme-companion:latest
-      container_name: grafana-stack-acme-helper
+      container_name: loki-compose-acme-helper
       volumes_from:
           - nginx-proxy
       volumes:
@@ -114,7 +114,7 @@ services:
       environment:
           DEFAULT_EMAIL: '${ACME_EMAIL}'
       networks: 
-          - grafana-stack
+          - loki-compose
       depends_on:
           - nginx-proxy
 {% endif %}
