@@ -1,27 +1,28 @@
 ---
+### Host environment ###
 lc_base_directory: /srv
 lc_service_user: root
-
 lc_compose_major_version: 2
 lc_docker_bin_dir: ''
-
+### systemd service ###
+lc_service_manage: false
+lc_service_state: started
+lc_service_enabled: true
+### Compose network ###
 lc_loki_bind_address: '0.0.0.0'
 lc_grafana_bind_address: '127.0.0.1'
-lc_grafana_vhost: 'grafana.example.tld'
-lc_grafana_password: 'p@ssword_to_be_replaced'
-
+### Bind mount directories ###
+lc_loki_bind_mount_dir: ''
+lc_grafana_bind_mount_dir: ''
+lc_nginx_log_bind_mount_dir: ''
+### nginx/ACME proxy ###
 lc_enable_acme_proxy: true
 lc_nginx_bind_address: '0.0.0.0'
 lc_letsencrypt_test_mode: true
 lc_acme_mail: 'admin@example.tld'
-
+### Grafana ###
+lc_grafana_vhost: 'grafana.example.tld'
+lc_grafana_password: 'p@ssword_to_be_replaced'
+### Alertmanager ###
 lc_alertmanager_default_receiver: 'black-hole'
 lc_alertmanager_receivers: []
-
-lc_loki_bind_mount_dir: ''
-lc_grafana_bind_mount_dir: ''
-lc_nginx_log_bind_mount_dir: ''
-
-lc_service_manage: false
-lc_service_state: started
-lc_service_enabled: true
