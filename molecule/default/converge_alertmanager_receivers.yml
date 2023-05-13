@@ -1,0 +1,18 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  roles:
+    - role: dominiquefuchs.loki_compose
+      vars:
+        lc_service_manage: true
+        lc_alertmanager_default_receiver: test-receiver
+        lc_alertmanager_receivers:
+          - name: test-receiver
+            telegram_configs:
+            - bot_token: '123456'
+              send_resolved: true
+              api_url: 'https://api.telegram.example'
+              chat_id: 123456
+              parse_mode: ''
