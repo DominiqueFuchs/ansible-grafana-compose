@@ -75,6 +75,7 @@ For a more customized and useful environment, one may want to
 - provide an own password for the grafana_admin
 - disable test (staging) mode for Let's Encrypt and provide a valid contact email
 - install the systemd service and ensure it is enabled and immediately started
+- define a receiver for alertmanager and set it as default receiver - the example below configures a Telegram bot/channel 
  
 Which gives:
 
@@ -89,6 +90,15 @@ Which gives:
             lc_letsencrypt_test_mode: false
             lc_acme_mail: 'yourname@example.tld'
             lc_service_manage: true
+            lc_alertmanager_default_receiver: test-receiver
+            lc_alertmanager_receivers:
+              - name: test-receiver
+                telegram_configs:
+                  - bot_token: '123456'
+                    send_resolved: true
+                    api_url: 'https://api.telegram.example'
+                    chat_id: 123456
+                    parse_mode: ''
 
 License
 -------
