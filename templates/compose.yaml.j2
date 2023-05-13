@@ -86,7 +86,7 @@ services:
         - certs:/etc/nginx/certs:ro
         - nginx-conf:/etc/nginx/conf.d
         - nginx-html:/usr/share/nginx/html
-        - config/nginx/vhost.d:/etc/nginx/vhost.d
+        - ./config/nginx/vhost.d:/etc/nginx/vhost.d
         - /var/run/docker.sock:/tmp/docker.sock:ro
 {% if lc_nginx_log_bind_mount_dir_sanitized %}
         - {{ lc_nginx_log_bind_mount_dir_sanitized }}:/var/log/nginx
