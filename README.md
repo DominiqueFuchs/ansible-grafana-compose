@@ -8,7 +8,7 @@ Ansible Role loki_compose
 
 Ansible role to deploy production-ready (**as in** fully configured and safely architected/deployed ready-to-use unit - **not as in** scalable, elastic and highly-available architecture. There are [other setup options](https://grafana.com/docs/loki/latest/installation/) and [deployment modes](https://grafana.com/docs/loki/latest/fundamentals/architecture/deployment-modes/) that are more sophisticated and should be considered) Loki environments with Docker Compose.
 
-The deployed environment includes Loki, Grafana and Alertmanager services as well as (optional, enabled by default) nginx-proxy and ACME services to provide a proxied, SSL-enabled web interface for Grafana. In every case, there exists only two individually configurable network bindings to the host-side (one for the Loki service and one for either for the proxy-service or for the Grafana service if the proxy service is disabled), all other communication is handled solely within the docker network that is set up by the compose file.
+The deployed environment includes Loki, Grafana and Alertmanager services as well as (optional, enabled by default) nginx-proxy and ACME services to provide a proxied, SSL-enabled web interface for Grafana. In every case, there exists only two containers with network bindings to the host-side (Loki and Grafana/nginx-proxy), all other communication is handled solely within the docker network that is set up by the compose file.
 
 While the the services itself are stateless in a sense that configuration is completely handled by the provided configuration options (and the generated configurations are bound read-only within the container), you can individually configure bind-mounts for Grafana (settings, dashboards, users, ...) and Loki (mostly index and chunk data if you're using a filesystem backend) in case you want to persist or back up the corresponding data locally.
 
@@ -32,7 +32,7 @@ All variables used within this role (internal ones as well as defaults meant to 
 | lc_service_user           | *root* — The user that will be owner of the deployment files and run the containers (will also be set in systemd service, if enabled) |
 | lc_compose_major_version  | *2* — Major version of the compose installation. This setting also determines the binary command (*docker-compose* vs. *docker compose*) embedded in the systemd service, if enabled |
 | lc_docker_bin_dir         | *None* – If left empty, docker binary path will be automatically determined at runtime of the play |
-| lc_loki_bind_address      | *0.0.0.0* — Bind address for the port defiition of the Loki container. Port is fixed on 3100 |
+| lc_loki_bind_addresses    | *['127.0.0.1']* — Bind address(es) for the port definition of the Loki container. Port is fixed on 3100 |
 | lc_grafana_bind_address   | *127.0.0.1* — Bind address for the port definition of the Grafana container. Port is fixed on 3000. Will only take effect if *lc_enable_acme_proxy* is disabled, otherwise Grafana container is **not** bound to the host side and only exposed within the compose network |
 | lc_grafana_vhost          | *grafana.example.tld* — domain record to be used for the virtual host definition of the proxy and ACME services, if enabled. Unused otherwise |
 | lc_grafana_password       | *p@ssword_to_be_replaced* — self-explanatory |
@@ -86,7 +86,7 @@ Which gives:
           vars:
             lc_service_user: loki
             lc_grafana_vhost: your.domain.tld
-            lc_loki_bind_address: lc_loki_bind_address: '{{ hostvars[inventory_hostname]["ansible_"~internal_interface].ipv4.address }}'
+            lc_loki_bind_addresses: ['{{ hostvars[inventory_hostname]["ansible_"~internal_interface].ipv4.address }}']
             lc_grafana_password: 'l3A6MN94$BGq'
             lc_letsencrypt_test_mode: false
             lc_acme_mail: 'yourname@example.tld'

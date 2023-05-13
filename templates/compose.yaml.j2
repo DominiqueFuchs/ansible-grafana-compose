@@ -15,7 +15,9 @@ services:
   loki:
     image: grafana/loki:2.8.2
     ports:
-      - '{{ lc_loki_bind_address }}:3100:3100'
+{% for address in lc_loki_bind_addresses %}
+      - '{{ address }}:3100:3100'
+{% endfor %}
     command: -config.file=/etc/loki/config.yaml
     networks:
       - loki-compose
