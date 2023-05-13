@@ -37,6 +37,7 @@ All variables used within this role (internal ones as well as defaults meant to 
 | lc_grafana_vhost          | *grafana.example.tld* — domain record to be used for the virtual host definition of the proxy and ACME services, if enabled. Unused otherwise |
 | lc_grafana_password       | *p@ssword_to_be_replaced* — self-explanatory |
 | lc_enable_acme_proxy      | *true* — Enable or disable generation of proxy and ACME container services. If disabled, the Grafana container will be bound to the host interface directly (see also *lc_grafana_bind_address*) |
+| lc_nginx_no_robots        | *true* — Enable or disable X-Robots-Tag header containing 'noindex, nofollow, nosnippet, noarchive' |
 | lc_nginx_bind_address     | *0.0.0.0* — Bind address for the port defiition of the nginx proxy container. Ports are fixed to 80 and 443 |
 | lc_letsencrypt_test_mode  | *true* — Enable or disable the staging mode of the ACME service. When enabled, the Let's Encrypt staging URL is used and resulting certificates will generate a browser warning |
 | lc_acme_mail              | *admin@example.tld* — The contact email that is used during the registration process of new certificates from Let's Encrypt |

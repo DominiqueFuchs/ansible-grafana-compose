@@ -39,6 +39,8 @@
   loop:
     - '{{ lc_base_directory_sanitized }}/LokiCompose'
     - '{{ lc_base_directory_sanitized }}/LokiCompose/config'
+    - '{{ lc_base_directory_sanitized }}/LokiCompose/config/nginx'
+    - '{{ lc_base_directory_sanitized }}/LokiCompose/config/nginx/vhost.d'
 
 - name: Ensure Loki Compose bind mount directories exist
   ansible.builtin.file:
@@ -84,6 +86,15 @@
       dest: '{{ lc_base_directory_sanitized }}/LokiCompose/config/loki.yaml'
       group: 10001
       mode: '640'
+
+- name: Ensure needed vhost configuration file exists
+  ansible.builtin.copy:
+    src: nginx_vhost.conf
+    dest: '{{ lc_base_directory_sanitized }}/LokiCompose/config/nginx/vhost.d/conf'
+    owner: '{{ lc_service_user }}'
+    group: '{{ lc_service_user }}'
+    mode: '644'
+  when: lc_nginx_no_robots
 
 - name: Ensure Loki Compose system service unit exists
   ansible.builtin.template:
