@@ -93,3 +93,11 @@ jobs:
           ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_IMAGE: ${{ matrix.image }}
           MOLECULE_PLAYBOOK: converge_bind_mounts.yml
+
+      - name: Run Molecule tests (bind mounts)
+        run: molecule test
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
+          MOLECULE_IMAGE: ${{ matrix.image }}
+          MOLECULE_PLAYBOOK: converge_alertmanager_receivers.yml
