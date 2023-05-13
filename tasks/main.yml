@@ -94,7 +94,7 @@
 - name: Ensure needed vhost configuration file exists
   ansible.builtin.copy:
     src: nginx_vhost.conf
-    dest: '{{ lc_base_directory_sanitized }}/LokiCompose/config/nginx/vhost.d/conf'
+    dest: '{{ lc_base_directory_sanitized }}/LokiCompose/config/nginx/vhost.d/default'
     owner: '{{ lc_service_user }}'
     group: '{{ lc_service_user }}'
     mode: '644'
