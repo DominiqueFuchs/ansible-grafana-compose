@@ -31,16 +31,20 @@
 
 - name: Ensure Loki Compose serving directories exist
   ansible.builtin.file:
-    path: '{{ item }}'
+    path: '{{ item.path }}'
     state: directory
     owner: '{{ lc_service_user }}'
     group: '{{ lc_service_user }}'
-    mode: '0750'
+    mode: '{{ item.mode }}'
   loop:
-    - '{{ lc_base_directory_sanitized }}/LokiCompose'
-    - '{{ lc_base_directory_sanitized }}/LokiCompose/config'
-    - '{{ lc_base_directory_sanitized }}/LokiCompose/config/nginx'
-    - '{{ lc_base_directory_sanitized }}/LokiCompose/config/nginx/vhost.d'
+    - path: '{{ lc_base_directory_sanitized }}/LokiCompose'
+      mode: '0750'
+    - path: '{{ lc_base_directory_sanitized }}/LokiCompose/config'
+      mode: '0755'
+    - path: '{{ lc_base_directory_sanitized }}/LokiCompose/config/nginx'
+      mode: '0755'
+    - path: '{{ lc_base_directory_sanitized }}/LokiCompose/config/nginx/vhost.d'
+      mode: '0755'
 
 - name: Ensure Loki Compose bind mount directories exist
   ansible.builtin.file:
