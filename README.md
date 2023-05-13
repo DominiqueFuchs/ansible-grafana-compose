@@ -75,7 +75,7 @@ For a more customized and useful environment, one may want to
 - provide an own password for the grafana_admin
 - disable test (staging) mode for Let's Encrypt and provide a valid contact email
 - install the systemd service and ensure it is enabled and immediately started
-- define a receiver for alertmanager and set it as default receiver - the example below configures a Telegram bot/channel 
+- define a receiver for alertmanager and set it as default receiver - the example below configures a Telegram bot/channel (the correct URL would be *https://api.telegram.org* - just put a fake tld there to prevent spamming from copy/paste startups)
  
 Which gives:
 
