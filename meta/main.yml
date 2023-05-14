@@ -13,6 +13,8 @@ galaxy_info:
     versions: ['bullseye']
   - name: EL
     versions: ['8', '9']
+  - name: Ubuntu
+    versions: ['jammy']
 
   galaxy_tags:
     - alertmanager

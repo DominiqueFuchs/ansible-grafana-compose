@@ -38,6 +38,7 @@ jobs:
           - dfuchs/alma-8-ansible
           - dfuchs/alma-9-ansible
           - dfuchs/debian-11-ansible
+          - dfuchs/ubuntu-22.04-ansible
 
     steps:
       - name: Check out the codebase
