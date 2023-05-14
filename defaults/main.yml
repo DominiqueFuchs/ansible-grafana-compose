@@ -1,12 +1,12 @@
 ---
 ### Host environment ###
-lc_base_directory: /srv
-lc_service_user: root
+lc_base_directory: '/srv'
+lc_service_user: 'root'
 lc_compose_major_version: 2
 lc_docker_bin_dir: ''
 ### systemd service ###
 lc_service_manage: false
-lc_service_state: started
+lc_service_state: 'started'
 lc_service_enabled: true
 ### Compose network ###
 lc_loki_bind_addresses: ['127.0.0.1']
