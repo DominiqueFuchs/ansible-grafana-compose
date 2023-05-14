@@ -24,6 +24,8 @@ lc_nginx_no_robots: true
 ### Grafana ###
 lc_grafana_vhost: 'grafana.example.tld'
 lc_grafana_password: 'p@ssword_to_be_replaced'
+### Loki ###
+lc_loki_retention_period: 31d
 ### Alertmanager ###
 lc_alertmanager_default_receiver: 'black-hole'
 lc_alertmanager_receivers: []

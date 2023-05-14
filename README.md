@@ -49,6 +49,7 @@ All variables used within this role (internal ones as well as defaults meant to 
 | lc_loki_bind_mount_dir    | *None* — Host directory to use for bind mount volume of the Loki containers data directory. If unset or empty, no named or bind mount volume will be created |
 | lc_grafana_bind_mount_dir | *None* — Host directory to use for bind mount volume of the Grafana containers data directory. If unset or empty, no named or bind mount volume will be created |
 | lc_nginx_log_bind_mount_dir | *None* — Host directory to use for bind mount volume of the nginx containers log directory. If unset or empty, no named or bind mount volume will be created |
+| lc_loki_retention_period  | *31d* — Retention period to apply to stored data. Note that automatic deletion of chunk data only happens when filesystem storage is used, Loki will not delete data on remote/cloud backends |
 
 Dependencies
 ------------

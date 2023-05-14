@@ -23,6 +23,16 @@ query_range:
         enabled: true
         max_size_mb: 100
 
+compactor:
+  working_directory: /data/retention
+  compaction_interval: 10m
+  retention_enabled: true
+  retention_delete_delay: 1h
+  retention_delete_worker_count: 150
+
+limits_config:
+  retention_period: {{ lc_loki_retention_period }}
+
 schema_config:
   configs:
     - from: "2023-01-01"
