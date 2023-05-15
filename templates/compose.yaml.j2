@@ -16,7 +16,7 @@ services:
   loki:
     image: grafana/loki:2.8.2
     ports:
-{% for address in lc_loki_bind_addresses %}
+{% for address in gc_loki_bind_addresses %}
       - '{{ address }}:3100:3100'
 {% endfor %}
     command: -config.file=/etc/loki/config.yaml
@@ -24,8 +24,8 @@ services:
       - gc-compose
     volumes:
       - ./config/loki.yaml:/etc/loki/config.yaml:ro
-{% if lc_loki_bind_mount_dir_sanitized %}
-      - {{ lc_loki_bind_mount_dir_sanitized }}:/loki
+{% if gc_loki_bind_mount_dir_sanitized %}
+      - {{ gc_loki_bind_mount_dir_sanitized }}:/loki
 {% endif %}
     depends_on:
         - alertmanager
@@ -35,8 +35,8 @@ services:
     container_name: gc-prometheus
     volumes:
       - ./config/prometheus.yaml:/etc/prometheus/prometheus.yaml
-{% if lc_prometheus_bind_mount_dir_sanitized %}
-      - - {{ lc_prometheus_bind_mount_dir_sanitized }}:/prometheus
+{% if gc_prometheus_bind_mount_dir_sanitized %}
+      - - {{ gc_prometheus_bind_mount_dir_sanitized }}:/prometheus
 {% else %}
       - prometheus-data:/prometheus
 {% endif %}
@@ -47,7 +47,7 @@ services:
       - '--web.console.templates=/etc/prometheus/consoles'
       - '--web.enable-lifecycle'
     ports:
-{% for address in lc_prometheus_bind_addresses %}
+{% for address in gc_prometheus_bind_addresses %}
       - '{{ address }}:9090:9090'
 {% endfor %}
     networks:
@@ -61,11 +61,11 @@ services:
       GF_AUTH_ANONYMOUS_ENABLED: false
       GF_SECURITY_ADMIN_USER: grafana_admin
       GF_SECURITY_ADMIN_PASSWORD: '${GRAFANA_PASSWORD}'
-{% if lc_enable_acme_proxy %}
-      VIRTUAL_HOST: '{{ lc_grafana_vhost }}'
+{% if gc_enable_acme_proxy %}
+      VIRTUAL_HOST: '{{ gc_grafana_vhost }}'
       VIRTUAL_PORT: 3000
-      LETSENCRYPT_HOST: '{{ lc_grafana_vhost }}'
-      LETSENCRYPT_TEST: {{ lc_letsencrypt_test_mode | to_json }}
+      LETSENCRYPT_HOST: '{{ gc_grafana_vhost }}'
+      LETSENCRYPT_TEST: {{ gc_letsencrypt_test_mode | to_json }}
 {% endif %}
     entrypoint:
       - sh
@@ -86,26 +86,26 @@ services:
           editable: false
         EOF
         /run.sh
-{% if lc_enable_acme_proxy %}
+{% if gc_enable_acme_proxy %}
     expose:
       - 3000
 {% else %}
     ports:
-{% for address in lc_grafana_bind_addresses %}
+{% for address in gc_grafana_bind_addresses %}
         - '{{ address }}:3000:3000'
 {% endfor %}
 {% endif %}
     networks:
       - gc-compose
     volumes:
-{% if lc_grafana_bind_mount_dir_sanitized %}
-      - {{ lc_grafana_bind_mount_dir_sanitized }}:/var/lib/grafana/
+{% if gc_grafana_bind_mount_dir_sanitized %}
+      - {{ gc_grafana_bind_mount_dir_sanitized }}:/var/lib/grafana/
 {% else %}
       - grafana-data:/var/lib/grafana/
 {% endif %}
     depends_on:
         - loki
-{% if lc_enable_acme_proxy %}
+{% if gc_enable_acme_proxy %}
 
   nginx-proxy:
     image: nginxproxy/nginx-proxy:latest
@@ -118,17 +118,17 @@ services:
         - nginx-html:/usr/share/nginx/html
         - ./config/nginx/vhost.d:/etc/nginx/vhost.d
         - /var/run/docker.sock:/tmp/docker.sock:ro
-{% if lc_nginx_log_bind_mount_dir_sanitized %}
-        - {{ lc_nginx_log_bind_mount_dir_sanitized }}:/var/log/nginx
+{% if gc_nginx_log_bind_mount_dir_sanitized %}
+        - {{ gc_nginx_log_bind_mount_dir_sanitized }}:/var/log/nginx
 {% endif %}
     environment:
         TRUST_DOWNSTREAM_PROXY: false
-        DEFAULT_HOST: '{{ lc_grafana_vhost }}'
+        DEFAULT_HOST: '{{ gc_grafana_vhost }}'
     networks: 
         - gc-compose
     ports:
-        - '{{ lc_nginx_bind_address }}:80:80'
-        - '{{ lc_nginx_bind_address }}:443:443'
+        - '{{ gc_nginx_bind_address }}:80:80'
+        - '{{ gc_nginx_bind_address }}:443:443'
     depends_on:
         - grafana
 
@@ -150,15 +150,15 @@ services:
 {% endif %}
 
 volumes:
-{% if lc_enable_acme_proxy %}
+{% if gc_enable_acme_proxy %}
     acme:
     certs:
     nginx-conf:
     nginx-html:
 {% endif %}
-{% if not lc_grafana_bind_mount_dir_sanitized %}
+{% if not gc_grafana_bind_mount_dir_sanitized %}
     grafana-data:
 {% endif %}
-{% if not lc_prometheus_bind_mount_dir_sanitized %}
+{% if not gc_prometheus_bind_mount_dir_sanitized %}
     prometheus-data:
 {% endif %}

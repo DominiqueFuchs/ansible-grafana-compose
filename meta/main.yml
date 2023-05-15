@@ -1,8 +1,8 @@
 galaxy_info:
-  role_name: loki_compose
+  role_name: grafana_compose
   namespace: dominiquefuchs
   author: Dominique Fuchs
-  description: Ansible role to deploy complete Loki (+ Grafana, Alertmanager, nginx-proxy, ACME) environments with Docker Compose.
+  description: Ansible role to deploy complete Grafana (+ Prometheus, Loki, Alertmanager, nginx-proxy, ACME) environments with Docker Compose.
 
   license: MIT
 

@@ -5,7 +5,7 @@
   gather_facts: false
   tasks:
     - name: Start Docker Compose
-      ansible.builtin.command: docker compose -f /srv/LokiCompose/compose.yaml up -d
+      ansible.builtin.command: docker compose -f /srv/GrafanaCompose/compose.yaml up -d
 
     - name: Sleep for 5 seconds and continue
       ansible.builtin.wait_for:
@@ -13,7 +13,7 @@
       delegate_to: localhost
 
     - name: Get docker logs
-      ansible.builtin.command: docker compose -f /srv/LokiCompose/compose.yaml logs
+      ansible.builtin.command: docker compose -f /srv/GrafanaCompose/compose.yaml logs
       register: docker_logs
 
     - name: Found error logs - printing nicely
