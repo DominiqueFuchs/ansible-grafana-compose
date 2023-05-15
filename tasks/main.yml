@@ -109,8 +109,8 @@
 
 - name: Ensure Grafana Compose system service unit exists
   ansible.builtin.template:
-    src: loki-compose.service.j2
-    dest: /etc/systemd/system/loki-compose.service
+    src: grafana-compose.service.j2
+    dest: /etc/systemd/system/grafana-compose.service
     owner: root
     group: root
     mode: '0644'
@@ -118,7 +118,7 @@
 
 - name: Ensure Grafana Compose service is enabled and started
   ansible.builtin.systemd:
-    name: loki-compose
+    name: grafana
     daemon_reload: true
     state: '{{ gc_service_state }}'
     enabled: '{{ gc_service_enabled }}'
