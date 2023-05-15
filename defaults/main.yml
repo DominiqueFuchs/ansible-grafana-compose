@@ -31,3 +31,5 @@ gc_loki_retention_period: 31d
 ### Alertmanager ###
 gc_alertmanager_default_receiver: 'black-hole'
 gc_alertmanager_receivers: []
+### Prometheus ###
+gc_node_exporters: []

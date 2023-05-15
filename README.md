@@ -43,7 +43,7 @@ All variables used within this role (internal ones as well as defaults meant to 
 | gc_letsencrypt_test_mode      | *true* — Enable or disable the staging mode of the ACME service. When enabled, the Let's Encrypt staging URL is used and resulting certificates will generate a browser warning |
 | gc_acme_mail                  | *admin@example.tld* — The contact email that is used during the registration process of new certificates from Let's Encrypt |
 | gc_alertmanager_default_receiver  | *black-hole* — Default receiver to use for unmatched alerts. *black-hole* is a dummy receiver without any action and is only generated when no other receivers are defined (see *gc_alertmanager_receivers*) |
-| gc_alertmanager_receivers     | *None* — Receiver configuration(s) for Alertmanager. See the [Alertmanager documentation on receiver configurations](https://prometheus.io/docs/alerting/latest/configuration/#receiver) as well as the [Alertmanager example configuration](https://github.com/prometheus/alertmanager/blob/main/doc/examples/simple.yml). Each receiver needs a unique name (which can in turn be set as *gc_alertmanager_default_receiver* and a corresponding config element) |
+| gc_alertmanager_receivers     | *[]* — Receiver configuration(s) for Alertmanager. See the [Alertmanager documentation on receiver configurations](https://prometheus.io/docs/alerting/latest/configuration/#receiver) as well as the [Alertmanager example configuration](https://github.com/prometheus/alertmanager/blob/main/doc/examples/simple.yml). Each receiver needs a unique name (which can in turn be set as *gc_alertmanager_default_receiver* and a corresponding config element) |
 | gc_service_manage             | *false* — Enable or disable service creation and state control for systemd. The service name is loki-compose |
 | gc_service_state              | *started* — Set the desired service state to ensure. Possible values are 'started', 'stopped', 'restarted' and 'reloaded' |
 | gc_service_enabled            | *true* — Enable or disable the systemd service to run at startup |
@@ -52,6 +52,7 @@ All variables used within this role (internal ones as well as defaults meant to 
 | gc_grafana_bind_mount_dir     | *None* — Host directory to use for bind mount volume of the Grafana containers data directory. If unset or empty, a named volume will be created instead |
 | gc_nginx_log_bind_mount_dir   | *None* — Host directory to use for bind mount volume of the nginx containers log directory. If unset or empty, no named or bind mount volume will be created |
 | gc_loki_retention_period      | *31d* — Retention period to apply to stored data. Note that automatic deletion of chunk data only happens when filesystem storage is used, Loki will not delete data on remote/cloud backends |
+| gc_node_exporters             | *[]* — List of IPs/FQDNs including ports with node exporter instances that should be scraped |
 
 Dependencies
 ------------
@@ -80,6 +81,7 @@ For a more customized and useful environment, one may want to
 - disable test (staging) mode for Let's Encrypt and provide a valid contact email
 - install the systemd service and ensure it is enabled and immediately started
 - define a receiver for alertmanager and set it as default receiver - the example below configures a Telegram bot/channel (the correct URL would be *https://api.telegram.org* - just put a fake tld there to prevent spamming from copy/paste startups)
+- define a list of node exporter instances for Prometheus to scrape
  
 Which gives:
 
@@ -104,6 +106,7 @@ Which gives:
                     api_url: 'https://api.telegram.example'
                     chat_id: 123456
                     parse_mode: ''
+            gc_node_exporters: ['1.2.3.4:9100']
 
 License
 -------
