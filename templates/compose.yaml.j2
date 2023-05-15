@@ -1,14 +1,15 @@
 networks:
-  loki-compose:
+  gc-compose:
 
 services:
   alertmanager:
     image: prom/alertmanager:latest
+    container_name: gc-alertmanager
     ports:
       - '127.0.0.1:9093:9093'
     command: --config.file=/etc/alertmanager/config.yaml
     networks:
-      - loki-compose
+      - gc-compose
     volumes:
       - ./config/alertmanager.yaml:/etc/alertmanager/config.yaml:ro
 
@@ -20,7 +21,7 @@ services:
 {% endfor %}
     command: -config.file=/etc/loki/config.yaml
     networks:
-      - loki-compose
+      - gc-compose
     volumes:
       - ./config/loki.yaml:/etc/loki/config.yaml:ro
 {% if lc_loki_bind_mount_dir_sanitized %}
@@ -29,8 +30,32 @@ services:
     depends_on:
         - alertmanager
 
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: gc-prometheus
+    volumes:
+      - ./config/prometheus.yaml:/etc/prometheus/prometheus.yaml
+{% if lc_prometheus_bind_mount_dir_sanitized %}
+      - - {{ lc_prometheus_bind_mount_dir_sanitized }}:/prometheus
+{% else %}
+      - prometheus-data:/prometheus
+{% endif %}
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yaml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    ports:
+{% for address in lc_prometheus_bind_addresses %}
+      - '{{ address }}:9090:9090'
+{% endfor %}
+    networks:
+      - gc-compose
+
   grafana:
     image: grafana/grafana:latest
+    container_name: gc-grafana
     environment:
       GF_PATHS_PROVISIONING: /etc/grafana/provisioning
       GF_AUTH_ANONYMOUS_ENABLED: false
@@ -66,10 +91,12 @@ services:
       - 3000
 {% else %}
     ports:
-        - '{{ lc_grafana_bind_address }}:3000:3000'
+{% for address in lc_grafana_bind_addresses %}
+        - '{{ address }}:3000:3000'
+{% endfor %}
 {% endif %}
     networks:
-      - loki-compose
+      - gc-compose
     volumes:
 {% if lc_grafana_bind_mount_dir_sanitized %}
       - {{ lc_grafana_bind_mount_dir_sanitized }}:/var/lib/grafana/
@@ -82,6 +109,7 @@ services:
 
   nginx-proxy:
     image: nginxproxy/nginx-proxy:latest
+    container_name: gc-nginx
     labels:
         - 'com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy'
     volumes:
@@ -97,7 +125,7 @@ services:
         TRUST_DOWNSTREAM_PROXY: false
         DEFAULT_HOST: '{{ lc_grafana_vhost }}'
     networks: 
-        - loki-compose
+        - gc-compose
     ports:
         - '{{ lc_nginx_bind_address }}:80:80'
         - '{{ lc_nginx_bind_address }}:443:443'
@@ -106,7 +134,7 @@ services:
 
   acme:
       image: nginxproxy/acme-companion:latest
-      container_name: loki-compose-acme-helper
+      container_name: gc-acme
       volumes_from:
           - nginx-proxy
       volumes:
@@ -116,7 +144,7 @@ services:
       environment:
           DEFAULT_EMAIL: '${ACME_EMAIL}'
       networks: 
-          - loki-compose
+          - gc-compose
       depends_on:
           - nginx-proxy
 {% endif %}
@@ -130,4 +158,7 @@ volumes:
 {% endif %}
 {% if not lc_grafana_bind_mount_dir_sanitized %}
     grafana-data:
+{% endif %}
+{% if not lc_prometheus_bind_mount_dir_sanitized %}
+    prometheus-data:
 {% endif %}

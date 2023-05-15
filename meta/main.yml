@@ -24,6 +24,7 @@ galaxy_info:
     - logs
     - loki
     - monitoring
+    - prometheus
     - promtail
     - server
 

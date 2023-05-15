@@ -60,6 +60,8 @@
       owner: 472
     - path: '{{ lc_nginx_log_bind_mount_dir_sanitized }}'
       owner: root
+    - path: '{{ lc_prometheus_bind_mount_dir }}'
+      owner: 65534
   when: item.path
 
 - name: Ensure Loki Compose file exists and is up to date
@@ -89,6 +91,10 @@
     - src: loki.yaml.j2
       dest: '{{ lc_base_directory_sanitized }}/LokiCompose/config/loki.yaml'
       group: 10001
+      mode: '640'
+    - src: prometheus.yaml.j2
+      dest: '{{ lc_base_directory_sanitized }}/LokiCompose/config/prometheus.yaml'
+      group: 65534
       mode: '640'
 
 - name: Ensure needed vhost configuration file exists

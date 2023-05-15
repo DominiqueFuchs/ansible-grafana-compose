@@ -10,9 +10,11 @@ lc_service_state: 'started'
 lc_service_enabled: true
 ### Compose network ###
 lc_loki_bind_addresses: ['127.0.0.1']
-lc_grafana_bind_address: '127.0.0.1'
+lc_prometheus_bind_addresses: ['127.0.0.1']
+lc_grafana_bind_addresses: ['127.0.0.1']
 ### Bind mount directories ###
 lc_loki_bind_mount_dir: ''
+lc_prometheus_bind_mount_dir: ''
 lc_grafana_bind_mount_dir: ''
 lc_nginx_log_bind_mount_dir: ''
 ### nginx/ACME proxy ###
