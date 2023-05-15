@@ -1,5 +1,5 @@
 [![CI](https://github.com/DominiqueFuchs/ansible-grafana-compose/actions/workflows/ci.yaml/badge.svg?branch=main&event=push)](https://github.com/DominiqueFuchs/ansible-grafana-compose/actions/workflows/ci.yaml)
-[![Ansible Role](https://img.shields.io/ansible/role/62267?label=galaxy&logo=ansible)](https://galaxy.ansible.com/dominiquefuchs/grafana_compose)
+[![Ansible Role](https://img.shields.io/ansible/role/62334?label=galaxy&logo=ansible)](https://galaxy.ansible.com/dominiquefuchs/grafana_compose)
 
      ansible-galaxy install dominiquefuchs.grafana_compose
 
@@ -44,7 +44,7 @@ All variables used within this role (internal ones as well as defaults meant to 
 | gc_acme_mail                  | *admin@example.tld* — The contact email that is used during the registration process of new certificates from Let's Encrypt |
 | gc_alertmanager_default_receiver  | *black-hole* — Default receiver to use for unmatched alerts. *black-hole* is a dummy receiver without any action and is only generated when no other receivers are defined (see *gc_alertmanager_receivers*) |
 | gc_alertmanager_receivers     | *None* — Receiver configuration(s) for Alertmanager. See the [Alertmanager documentation on receiver configurations](https://prometheus.io/docs/alerting/latest/configuration/#receiver) as well as the [Alertmanager example configuration](https://github.com/prometheus/alertmanager/blob/main/doc/examples/simple.yml). Each receiver needs a unique name (which can in turn be set as *gc_alertmanager_default_receiver* and a corresponding config element) |
-| gc_service_manage             | *false* — Enable or disable service creation and state control for systemd. The service name is loki-compose |
+| gc_service_manage             | *false* — Enable or disable service creation and state control for systemd. The service name is grafana-compose |
 | gc_service_state              | *started* — Set the desired service state to ensure. Possible values are 'started', 'stopped', 'restarted' and 'reloaded' |
 | gc_service_enabled            | *true* — Enable or disable the systemd service to run at startup |
 | gc_loki_bind_mount_dir        | *None* — Host directory to use for bind mount volume of the Loki containers data directory. If unset or empty, no named or bind mount volume will be created |
@@ -87,7 +87,7 @@ Which gives:
       roles:
         - role: dominiquefuchs.grafana_compose
           vars:
-            gc_service_user: loki
+            gc_service_user: grafana
             gc_grafana_vhost: your.domain.tld
             gc_loki_bind_addresses: ['127.0.0.1', '{{ hostvars[inventory_hostname]["ansible_"~internal_interface].ipv4.address }}']
             gc_prometheus_bind_addresses: ['127.0.0.1', '{{ hostvars[inventory_hostname]["ansible_"~internal_interface].ipv4.address }}']
