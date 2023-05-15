@@ -1,11 +1,11 @@
 route:
-  receiver: '{{ lc_alertmanager_default_receiver }}'
+  receiver: '{{ gc_alertmanager_default_receiver }}'
   group_by: [ alertname ]
 
 receivers:
-{% if lc_alertmanager_receivers %}
+{% if gc_alertmanager_receivers %}
 {# to_nice_json because PyYAML is a freaking mess w/ dict lists and offsets #}
-  {{ lc_alertmanager_receivers | to_nice_json }}
+  {{ gc_alertmanager_receivers | to_nice_json }}
 {% else %}
   - name: 'black-hole'
 {% endif %}

@@ -10,6 +10,3 @@ molecule = {extras = ["docker"], version = "*"}
 molecule-plugins = {extras = ["docker"], version = "*"}
 yamllint = "*"
 ansible-lint = "*"
-
-[requires]
-python_version = "3.11"
