@@ -118,7 +118,7 @@
 
 - name: Ensure Grafana Compose service is enabled and started
   ansible.builtin.systemd:
-    name: grafana
+    name: grafana-compose
     daemon_reload: true
     state: '{{ gc_service_state }}'
     enabled: '{{ gc_service_enabled }}'
