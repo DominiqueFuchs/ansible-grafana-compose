@@ -71,20 +71,6 @@ services:
       - sh
       - -euc
       - |
-        mkdir -p /etc/grafana/provisioning/datasources
-        cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
-        apiVersion: 1
-        datasources:
-        - name: Loki
-          type: loki
-          access: proxy 
-          orgId: 1
-          url: http://loki:3100
-          basicAuth: false
-          isDefault: true
-          version: 1
-          editable: false
-        EOF
         /run.sh
 {% if gc_enable_acme_proxy %}
     expose:
@@ -102,6 +88,7 @@ services:
       - {{ gc_grafana_bind_mount_dir_sanitized }}:/var/lib/grafana/
 {% else %}
       - grafana-data:/var/lib/grafana/
+      - ./config/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
 {% endif %}
     depends_on:
         - loki
