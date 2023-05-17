@@ -105,7 +105,6 @@
     state: directory
     owner: '{{ gc_service_user }}'
     group: '{{ gc_service_user }}'
-    mode: '0755'
   loop:
     - path: '{{ gc_loki_bind_mount_dir_sanitized }}'
     - path: '{{ gc_grafana_bind_mount_dir_sanitized }}'
