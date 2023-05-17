@@ -35,34 +35,61 @@
     state: directory
     owner: '{{ gc_service_user }}'
     group: '{{ gc_service_user }}'
+    recurse: true
+  loop:
+    - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/grafana/provisioning/datasources'
+    - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/nginx/vhost.d'
+
+- name: Ensure .env and configuration files exist and are up to date
+  ansible.builtin.template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    owner: '{{ gc_service_user }}'
+    group: '{{ gc_service_user }}'
     mode: '{{ item.mode }}'
   loop:
-    - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose'
-      mode: '0750'
-    - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config'
-      mode: '0755'
-    - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/nginx'
-      mode: '0755'
-    - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/nginx/vhost.d'
-      mode: '0755'
+    - src: .env.j2
+      dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/.env'
+      mode: '600'
+    - src: alertmanager.yaml.j2
+      dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/alertmanager.yaml'
+      mode: '640'
+    - src: loki.yaml.j2
+      dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/loki.yaml'
+      mode: '640'
+    - src: prometheus.yaml.j2
+      dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prometheus.yaml'
+      mode: '640'
+    - src: grafana_datasources.yaml.j2
+      dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/grafana/provisioning/datasources/ds.yaml'
+      mode: '640'
 
-- name: Ensure Grafana Compose bind mount directories exist
-  ansible.builtin.file:
-    path: '{{ item.path }}'
-    state: directory
-    owner: '{{ item.owner }}'
+- name: Ensure needed vhost configuration file exists
+  ansible.builtin.copy:
+    src: nginx_vhost.conf
+    dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/nginx/vhost.d/default'
+    owner: '{{ gc_service_user }}'
     group: '{{ gc_service_user }}'
-    mode: '0750'
+    mode: '640'
+    force: false
+  when: gc_nginx_no_robots
+
+- name: Set ACL for bind mounted configuration files
+  ansible.posix.acl:
+    path: '{{ item.path }}'
+    entity: '{{ item.entity }}'
+    etype: user
+    permissions: r
+    state: present
   loop:
-    - path: '{{ gc_loki_bind_mount_dir_sanitized }}'
-      owner: 10001
-    - path: '{{ gc_grafana_bind_mount_dir_sanitized }}'
-      owner: 472
-    - path: '{{ gc_nginx_log_bind_mount_dir_sanitized }}'
-      owner: root
-    - path: '{{ gc_prometheus_bind_mount_dir }}'
-      owner: 65534
-  when: item.path
+    - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/alertmanager.yaml'
+      entity: 65534
+    - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/loki.yaml'
+      entity: 10001
+    - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prometheus.yaml'
+      entity: 65534
+    - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/grafana/provisioning/datasources/ds.yaml'
+      entity: 472
 
 - name: Ensure Grafana Compose file exists and is up to date
   ansible.builtin.template:
@@ -72,40 +99,34 @@
     group: '{{ gc_service_user }}'
     mode: '0640'
 
-- name: Ensure .env and configuration files exist and are up to date
-  ansible.builtin.template:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
-    owner: '{{ gc_service_user }}'
-    group: '{{ item.group }}'
-    mode: '{{ item.mode }}'
-  loop:
-    - src: .env.j2
-      dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/.env'
-      group: '{{ gc_service_user }}'
-      mode: '600'
-    - src: alertmanager.yaml.j2
-      dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/alertmanager.yaml'
-      group: 65534
-      mode: '640'
-    - src: loki.yaml.j2
-      dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/loki.yaml'
-      group: 10001
-      mode: '640'
-    - src: prometheus.yaml.j2
-      dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prometheus.yaml'
-      group: 65534
-      mode: '640'
-
-- name: Ensure needed vhost configuration file exists
-  ansible.builtin.copy:
-    src: nginx_vhost.conf
-    dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/nginx/vhost.d/default'
+- name: Ensure Grafana Compose bind mount directories exist
+  ansible.builtin.file:
+    path: '{{ item.path }}'
+    state: directory
     owner: '{{ gc_service_user }}'
     group: '{{ gc_service_user }}'
-    mode: '644'
-    force: false
-  when: gc_nginx_no_robots
+  loop:
+    - path: '{{ gc_loki_bind_mount_dir_sanitized }}'
+    - path: '{{ gc_grafana_bind_mount_dir_sanitized }}'
+    - path: '{{ gc_nginx_log_bind_mount_dir_sanitized }}'
+    - path: '{{ gc_prometheus_bind_mount_dir }}'
+  when: item.path
+
+- name: Set ACL for bind mounted data directories
+  ansible.posix.acl:
+    path: '{{ item.path }}'
+    entity: '{{ item.entity }}'
+    etype: user
+    permissions: rwx
+    state: present
+  loop:
+    - path: '{{ gc_loki_bind_mount_dir_sanitized }}'
+      entity: 10001
+    - path: '{{ gc_grafana_bind_mount_dir_sanitized }}'
+      entity: 472
+    - path: '{{ gc_prometheus_bind_mount_dir }}'
+      entity: 65534
+  when: item.path
 
 - name: Ensure Grafana Compose system service unit exists
   ansible.builtin.template:
