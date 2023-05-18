@@ -15,6 +15,7 @@ services:
 
   loki:
     image: grafana/loki:2.8.2
+    container_name: gc-loki
     ports:
 {% for address in gc_loki_bind_addresses %}
       - '{{ address }}:3100:3100'
