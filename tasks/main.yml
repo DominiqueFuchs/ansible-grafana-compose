@@ -39,6 +39,7 @@
   loop:
     - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/grafana/provisioning/datasources'
     - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/nginx/vhost.d'
+  notify: Restart grafana-compose service
 
 - name: Ensure .env and configuration files exist and are up to date
   ansible.builtin.template:
@@ -63,6 +64,7 @@
     - src: grafana_datasources.yaml.j2
       dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/grafana/provisioning/datasources/ds.yaml'
       mode: '640'
+  notify: Restart grafana-compose service
 
 - name: Ensure needed vhost configuration file exists
   ansible.builtin.copy:
@@ -72,6 +74,7 @@
     group: '{{ gc_service_user }}'
     force: false
   when: gc_enable_acme_proxy and gc_nginx_no_robots
+  notify: Restart grafana-compose service
 
 - name: Set ACL for bind mounted configuration files
   ansible.posix.acl:
@@ -89,6 +92,7 @@
       entity: 65534
     - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/grafana/provisioning/datasources/ds.yaml'
       entity: 472
+  register: bind_mount_acl
 
 - name: Ensure Grafana Compose file exists and is up to date
   ansible.builtin.template:
@@ -97,6 +101,7 @@
     owner: '{{ gc_service_user }}'
     group: '{{ gc_service_user }}'
     mode: '0640'
+  notify: Restart grafana-compose service
 
 - name: Ensure Grafana Compose bind mount directories exist
   ansible.builtin.file:
@@ -110,6 +115,7 @@
     - path: '{{ gc_nginx_log_bind_mount_dir_sanitized }}'
     - path: '{{ gc_prometheus_bind_mount_dir }}'
   when: item.path
+  notify: Restart grafana-compose service
 
 - name: Set ACL for bind mounted data directories
   ansible.posix.acl:
@@ -143,3 +149,4 @@
     state: '{{ gc_service_state }}'
     enabled: '{{ gc_service_enabled }}'
   when: gc_service_manage | bool
+  register: gc_systemd_state
