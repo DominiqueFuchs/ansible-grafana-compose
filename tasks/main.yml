@@ -70,9 +70,8 @@
     dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/nginx/vhost.d/default'
     owner: '{{ gc_service_user }}'
     group: '{{ gc_service_user }}'
-    mode: '640'
     force: false
-  when: gc_nginx_no_robots
+  when: gc_enable_acme_proxy and gc_nginx_no_robots
 
 - name: Set ACL for bind mounted configuration files
   ansible.posix.acl:
