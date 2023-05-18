@@ -63,13 +63,13 @@ jobs:
           MOLECULE_IMAGE: ${{ matrix.image }}
           MOLECULE_PLAYBOOK: converge_default.yml
 
-      - name: Run Molecule tests (systemd service)
+      - name: Run Molecule tests (service management)
         run: molecule test
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_IMAGE: ${{ matrix.image }}
-          MOLECULE_PLAYBOOK: converge_systemd_enabled.yml
+          MOLECULE_PLAYBOOK: converge_service_enabled.yml
 
       - name: Run Molecule tests (service user)
         run: molecule test

@@ -143,7 +143,7 @@
   when: gc_service_manage | bool
 
 - name: Ensure Grafana Compose service is enabled and started
-  ansible.builtin.systemd:
+  ansible.builtin.service:
     name: grafana-compose
     daemon_reload: true
     state: '{{ gc_service_state }}'
