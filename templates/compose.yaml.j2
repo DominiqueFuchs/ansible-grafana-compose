@@ -14,7 +14,7 @@ services:
       - ./config/alertmanager.yaml:/etc/alertmanager/config.yaml:ro
 
   loki:
-    image: grafana/loki:2.8.2
+    image: grafana/loki:latest
     container_name: gc-loki
     ports:
 {% for address in gc_loki_bind_addresses %}
