@@ -21,17 +21,17 @@ provisioner:
     converge: ${MOLECULE_PLAYBOOK:-converge_default.yml}
 scenario:
   test_sequence:
-#    - dependency
-#    - cleanup
+    # - dependency
+    # - cleanup
     - destroy
     - syntax
     - create
-#    - prepare
+    # - prepare
     - converge
     - idempotence
-#    - side_effect
+    # - side_effect
     - verify
-#    - cleanup
+    # - cleanup
     - destroy
 verifier:
   name: ansible

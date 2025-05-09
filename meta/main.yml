@@ -1,3 +1,4 @@
+---
 galaxy_info:
   role_name: grafana_compose
   namespace: dominiquefuchs
@@ -9,12 +10,12 @@ galaxy_info:
   min_ansible_version: '2.9'
 
   platforms:
-  - name: Debian
-    versions: ['bullseye']
-  - name: EL
-    versions: ['8', '9']
-  - name: Ubuntu
-    versions: ['jammy']
+    - name: Debian
+      versions: ['bullseye']
+    - name: EL
+      versions: ['8', '9']
+    - name: Ubuntu
+      versions: ['jammy']
 
   galaxy_tags:
     - alertmanager

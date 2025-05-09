@@ -1,3 +1,4 @@
+---
 - name: Restart grafana-compose service
   ansible.builtin.service:
     name: grafana-compose
