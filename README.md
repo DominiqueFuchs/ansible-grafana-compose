@@ -1,5 +1,6 @@
 [![CI](https://github.com/DominiqueFuchs/ansible-grafana-compose/actions/workflows/ci.yaml/badge.svg?branch=main&event=push)](https://github.com/DominiqueFuchs/ansible-grafana-compose/actions/workflows/ci.yaml)
-[![Ansible Role](https://img.shields.io/ansible/role/62334?label=galaxy&logo=ansible)](https://galaxy.ansible.com/dominiquefuchs/grafana_compose)
+[![Ansible Role](https://img.shields.io/ansible/role/d/dominiquefuchs/grafana_compose?label=Ansible%20Galaxy&logo=ansible)](https://galaxy.ansible.com/dominiquefuchs/grafana_compose)
+
 
      ansible-galaxy install dominiquefuchs.grafana_compose
 
