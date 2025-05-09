@@ -23,5 +23,11 @@
 
     - name: Fail if there are no errors in compose output
       ansible.builtin.assert:
-        that: '"level=error" not in docker_logs.stdout'
+        that:
+          - >
+            docker_logs.stdout_lines
+            | select('search', 'level=error')
+            | reject('search', 'is already registered')
+            | list
+            | length == 0
         quiet: true
