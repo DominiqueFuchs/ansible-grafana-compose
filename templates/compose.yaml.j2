@@ -113,7 +113,7 @@ services:
     environment:
         TRUST_DOWNSTREAM_PROXY: false
         DEFAULT_HOST: '{{ gc_grafana_vhost }}'
-    networks: 
+    networks:
         - gc-compose
     ports:
         - '{{ gc_nginx_bind_address }}:80:80'
@@ -132,7 +132,7 @@ services:
           - /var/run/docker.sock:/var/run/docker.sock:ro
       environment:
           DEFAULT_EMAIL: '${ACME_EMAIL}'
-      networks: 
+      networks:
           - gc-compose
       depends_on:
           - nginx-proxy
