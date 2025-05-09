@@ -1,4 +1,5 @@
 [![CI](https://github.com/DominiqueFuchs/ansible-grafana-compose/actions/workflows/ci.yaml/badge.svg?branch=main&event=push)](https://github.com/DominiqueFuchs/ansible-grafana-compose/actions/workflows/ci.yaml)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/DominiqueFuchs/ansible-grafana-compose/main.svg)](https://results.pre-commit.ci/latest/github/DominiqueFuchs/ansible-grafana-compose/main)
 [![Ansible Role](https://img.shields.io/ansible/role/d/dominiquefuchs/grafana_compose?label=Ansible%20Galaxy&logo=ansible&color=489BF5)](https://galaxy.ansible.com/dominiquefuchs/grafana_compose)
 
 
