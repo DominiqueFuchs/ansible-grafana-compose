@@ -37,7 +37,7 @@ services:
     volumes:
       - ./config/prometheus.yaml:/etc/prometheus/prometheus.yaml
 {% if gc_prometheus_bind_mount_dir_sanitized %}
-      - - {{ gc_prometheus_bind_mount_dir_sanitized }}:/prometheus
+      - {{ gc_prometheus_bind_mount_dir_sanitized }}:/prometheus
 {% else %}
       - prometheus-data:/prometheus
 {% endif %}
