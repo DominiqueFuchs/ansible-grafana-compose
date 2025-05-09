@@ -28,6 +28,7 @@ gc_grafana_vhost: 'grafana.example.tld'
 gc_grafana_password: 'p@ssword_to_be_replaced'
 ### Loki ###
 gc_loki_retention_period: 31d
+gc_loki_version: "latest"
 ### Alertmanager ###
 gc_alertmanager_default_receiver: 'black-hole'
 gc_alertmanager_receivers: []

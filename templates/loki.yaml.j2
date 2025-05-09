@@ -47,7 +47,9 @@ storage_config:
   tsdb_shipper:
     active_index_directory: /loki/tsdb-index
     cache_location: /loki/tsdb-cache
+    {%- if gc_loki_version != 'latest' and (gc_loki_version.split('.')|map('int')|list) < [3,0,0] -%}
     shared_store: filesystem
+    {%- endif %}
 
 ruler:
   alertmanager_url: http://alertmanager:9093
