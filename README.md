@@ -35,13 +35,13 @@ All variables used within this role (internal ones as well as defaults meant to 
 | gc_loki_bind_addresses        | *['127.0.0.1']* — Bind address(es) for the port definition of the Loki container. Port is fixed on 3100 |
 | gc_prometheus_bind_addresses  | *['127.0.0.1']* — Bind address(es) for the port definition of the Prometheus container. Port is fixed on 3100 |
 | gc_grafana_bind_addresses     | *['127.0.0.1']* — Bind address(es) for the port definition of the Grafana container. Port is fixed on 3000. Will only take effect if *gc_enable_acme_proxy* is disabled, otherwise Grafana container is **not** bound to the host side and only exposed within the compose network |
-| gc_grafana_vhost              | *grafana.example.tld* — domain record to be used for the virtual host definition of the proxy and ACME services, if enabled. Unused otherwise |
+| gc_grafana_vhost              | *grafana.example.app* — domain record to be used for the virtual host definition of the proxy and ACME services, if enabled. Unused otherwise |
 | gc_grafana_password            *p@ssword_to_be_replaced* — self-explanatory |
 | gc_enable_acme_proxy          | *true* — Enable or disable generation of proxy and ACME container services. If disabled, the Grafana container will be bound to the host interface directly (see also *gc_grafana_bind_address*) |
 | gc_nginx_no_robots            | *true* — Enable or disable X-Robots-Tag header containing 'noindex, nofollow, nosnippet, noarchive' |
 | gc_nginx_bind_address         | *0.0.0.0* — Bind address for the port defiition of the nginx proxy container. Ports are fixed to 80 and 443 |
 | gc_letsencrypt_test_mode      | *true* — Enable or disable the staging mode of the ACME service. When enabled, the Let's Encrypt staging URL is used and resulting certificates will generate a browser warning |
-| gc_acme_mail                  | *admin@example.tld* — The contact email that is used during the registration process of new certificates from Let's Encrypt |
+| gc_acme_mail                  | *admin@example.app* — The contact email that is used during the registration process of new certificates from Let's Encrypt |
 | gc_alertmanager_default_receiver  | *black-hole* — Default receiver to use for unmatched alerts. *black-hole* is a dummy receiver without any action and is only generated when no other receivers are defined (see *gc_alertmanager_receivers*) |
 | gc_alertmanager_receivers     | *[]* — Receiver configuration(s) for Alertmanager. See the [Alertmanager documentation on receiver configurations](https://prometheus.io/docs/alerting/latest/configuration/#receiver) as well as the [Alertmanager example configuration](https://github.com/prometheus/alertmanager/blob/main/doc/examples/simple.yml). Each receiver needs a unique name (which can in turn be set as *gc_alertmanager_default_receiver* and a corresponding config element) |
 | gc_service_manage             | *false* — Enable or disable service creation and state control for systemd. The service name is grafana-compose |

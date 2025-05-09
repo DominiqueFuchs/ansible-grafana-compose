@@ -21,10 +21,10 @@ gc_nginx_log_bind_mount_dir: ''
 gc_enable_acme_proxy: true
 gc_nginx_bind_address: '0.0.0.0'
 gc_letsencrypt_test_mode: true
-gc_acme_mail: 'admin@example.tld'
+gc_acme_mail: 'admin@example.app'
 gc_nginx_no_robots: true
 ### Grafana ###
-gc_grafana_vhost: 'grafana.example.tld'
+gc_grafana_vhost: 'grafana.example.app'
 gc_grafana_password: 'p@ssword_to_be_replaced'
 ### Loki ###
 gc_loki_retention_period: 31d
