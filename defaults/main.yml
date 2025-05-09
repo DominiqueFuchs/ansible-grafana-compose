@@ -29,6 +29,7 @@ gc_grafana_password: 'p@ssword_to_be_replaced'
 ### Loki ###
 gc_loki_retention_period: 31d
 gc_loki_version: "latest"
+gc_loki_schema_version: "v13"
 ### Alertmanager ###
 gc_alertmanager_default_receiver: 'black-hole'
 gc_alertmanager_receivers: []

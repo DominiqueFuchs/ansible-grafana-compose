@@ -40,7 +40,7 @@ schema_config:
         period: 24h
         prefix: index_
       object_store: filesystem
-      schema: v12
+      schema: {{ gc_loki_schema_version }}
       store: tsdb
 
 storage_config:
