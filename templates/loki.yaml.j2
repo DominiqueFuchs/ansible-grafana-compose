@@ -29,6 +29,9 @@ compactor:
   retention_enabled: true
   retention_delete_delay: 1h
   retention_delete_worker_count: 150
+  {%- if gc_loki_version == 'latest' or (gc_loki_version != 'latest' and (gc_loki_version.split('.')|map('int')|list) >= [3,0,0]) -%}
+  delete-request-store: filesystem
+  {%- endif %}
 
 limits_config:
   retention_period: {{ gc_loki_retention_period }}
