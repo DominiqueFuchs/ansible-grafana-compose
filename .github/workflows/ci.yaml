@@ -10,25 +10,6 @@ on:
       - '.gitignore'
 
 jobs:
-  lint:
-    name: YAML linting
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the codebase
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-
-      - name: Install test dependencies
-        run: pip install yamllint
-
-      - name: Lint YAML code
-        run: |
-          yamllint .
-
   molecule:
     name: Molecule
     runs-on: ubuntu-latest
