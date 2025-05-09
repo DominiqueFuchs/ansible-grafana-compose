@@ -52,6 +52,7 @@ All variables used within this role (internal ones as well as defaults meant to 
 | gc_grafana_bind_mount_dir     | *None* — Host directory to use for bind mount volume of the Grafana containers data directory. If unset or empty, a named volume will be created instead |
 | gc_nginx_log_bind_mount_dir   | *None* — Host directory to use for bind mount volume of the nginx containers log directory. If unset or empty, no named or bind mount volume will be created |
 | gc_loki_retention_period      | *31d* — Retention period to apply to stored data. Note that automatic deletion of chunk data only happens when filesystem storage is used, Loki will not delete data on remote/cloud backends |
+| gc_loki_version               | *latest* — Loki image version tag to use |
 | gc_node_exporters             | *[]* — List of IPs/FQDNs including ports with node exporter instances that should be scraped |
 
 Dependencies
