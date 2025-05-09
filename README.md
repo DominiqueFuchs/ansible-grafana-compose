@@ -36,7 +36,7 @@ All variables used within this role (internal ones as well as defaults meant to 
 | gc_prometheus_bind_addresses  | *['127.0.0.1']* — Bind address(es) for the port definition of the Prometheus container. Port is fixed on 3100 |
 | gc_grafana_bind_addresses     | *['127.0.0.1']* — Bind address(es) for the port definition of the Grafana container. Port is fixed on 3000. Will only take effect if *gc_enable_acme_proxy* is disabled, otherwise Grafana container is **not** bound to the host side and only exposed within the compose network |
 | gc_grafana_vhost              | *grafana.example.app* — domain record to be used for the virtual host definition of the proxy and ACME services, if enabled. Unused otherwise |
-| gc_grafana_password            *p@ssword_to_be_replaced* — self-explanatory |
+| gc_grafana_password           | *p@ssword_to_be_replaced* — self-explanatory |
 | gc_enable_acme_proxy          | *true* — Enable or disable generation of proxy and ACME container services. If disabled, the Grafana container will be bound to the host interface directly (see also *gc_grafana_bind_address*) |
 | gc_nginx_no_robots            | *true* — Enable or disable X-Robots-Tag header containing 'noindex, nofollow, nosnippet, noarchive' |
 | gc_nginx_bind_address         | *0.0.0.0* — Bind address for the port defiition of the nginx proxy container. Ports are fixed to 80 and 443 |
