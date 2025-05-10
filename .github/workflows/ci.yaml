@@ -13,6 +13,9 @@ jobs:
   molecule:
     name: Molecule
     runs-on: ubuntu-latest
+    env:
+      PY_COLORS: '1'
+      ANSIBLE_FORCE_COLOR: '1'
     strategy:
       matrix:
         image:
@@ -33,8 +36,7 @@ jobs:
       # RHEL 8 provides Python 3.6, which is not supported by ansible-core 2.17+
       - name: Set up virtual environment
         run: |
-          python3 -m venv .venv
-          source .venv/bin/activate
+          python3 -m venv .venv && source .venv/bin/activate
           if [[ "${{ matrix.image }}" == "dfuchs/alma-8-ansible" ]]; then
             pip install "ansible-core<2.17" ansible-lint molecule molecule-plugins[docker] docker
           else
@@ -42,50 +44,37 @@ jobs:
           fi
           ansible-galaxy collection install -r requirements.yml
 
-      - name: Run Molecule tests (default)
-        run: source .venv/bin/activate && molecule test
+      - name: Test molecule scenario (default)
+        run: source .venv/bin/activate && molecule test -s default
         env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_IMAGE: ${{ matrix.image }}
-          MOLECULE_PLAYBOOK: converge_default.yml
 
-      - name: Run Molecule tests (service management)
-        run: source .venv/bin/activate && molecule test
+      - name: Test molecule scenario (service_enabled)
+        run: source .venv/bin/activate && molecule test -s service_enabled
         env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_IMAGE: ${{ matrix.image }}
-          MOLECULE_PLAYBOOK: converge_service_enabled.yml
 
-      - name: Run Molecule tests (service user)
-        run: source .venv/bin/activate && molecule test
+      - name: Test molecule scenario (service_user)
+        run: source .venv/bin/activate && molecule test -s service_user
         env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_IMAGE: ${{ matrix.image }}
-          MOLECULE_PLAYBOOK: converge_service_user.yml
 
-      - name: Run Molecule tests (proxy disabled)
-        run: source .venv/bin/activate && molecule test
+      - name: Test molecule scenario (acme_proxy_disabled)
+        run: source .venv/bin/activate && molecule test -s acme_proxy_disabled
         env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_IMAGE: ${{ matrix.image }}
-          MOLECULE_PLAYBOOK: converge_service_user.yml
 
-      - name: Run Molecule tests (bind mounts)
-        run: source .venv/bin/activate && molecule test
+      - name: Test molecule scenario (bind_mounts)
+        run: source .venv/bin/activate && molecule test -s bind_mounts
         env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_IMAGE: ${{ matrix.image }}
-          MOLECULE_PLAYBOOK: converge_bind_mounts.yml
 
-      - name: Run Molecule tests (alertmanager receivers)
-        run: source .venv/bin/activate && molecule test
+      - name: Test molecule scenario (alertmanager_receivers)
+        run: source .venv/bin/activate && molecule test -s alertmanager_receivers
         env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_IMAGE: ${{ matrix.image }}
-          MOLECULE_PLAYBOOK: converge_alertmanager_receivers.yml
+
+      - name: Test molecule scenario (node_exporters)
+        run: source .venv/bin/activate && molecule test -s node_exporters
+        env:
+          MOLECULE_IMAGE: ${{ matrix.image }}

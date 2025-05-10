@@ -1,0 +1,30 @@
+---
+# Shared verification tasks for all Molecule scenarios
+
+- name: Start Docker Compose
+  ansible.builtin.command: docker compose -f /srv/GrafanaCompose/compose.yaml up -d
+
+- name: Sleep for 5 seconds and continue
+  ansible.builtin.wait_for:
+    timeout: 5
+  delegate_to: localhost
+
+- name: Get docker logs
+  ansible.builtin.command: docker compose -f /srv/GrafanaCompose/compose.yaml logs
+  register: docker_logs
+
+- name: Found error logs - printing nicely
+  ansible.builtin.debug:
+    msg: '{{ docker_logs.stdout_lines }}'
+  when: '"level=error" in docker_logs.stdout'
+
+- name: Fail if there are no errors in compose output
+  ansible.builtin.assert:
+    that:
+      - >
+        docker_logs.stdout_lines
+        | select('search', 'level=error')
+        | reject('search', 'is already registered')
+        | list
+        | length == 0
+    quiet: true
