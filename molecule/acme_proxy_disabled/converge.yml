@@ -1,7 +1,6 @@
 ---
 - name: Converge
   hosts: all
-  become: true
 
   roles:
     - role: dominiquefuchs.grafana_compose
