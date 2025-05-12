@@ -19,12 +19,12 @@ jobs:
     strategy:
       matrix:
         image:
-          - dfuchs/alma-8-ansible
-          - dfuchs/alma-9-ansible
-          - dfuchs/debian-11-ansible
-          - dfuchs/debian-12-ansible
-          - dfuchs/ubuntu-22.04-ansible
-          - dfuchs/ubuntu-24.04-ansible
+          - dfuchs/did-alma:8-extra
+          - dfuchs/did-alma:9-extra
+          - dfuchs/did-debian:11-extra
+          - dfuchs/did-debian:12-extra
+          - dfuchs/did-ubuntu:22.04-extra
+          - dfuchs/did-ubuntu:24.04-extra
 
     steps:
       - name: Check out the codebase
@@ -39,7 +39,7 @@ jobs:
       - name: Set up virtual environment
         run: |
           python3 -m venv .venv && source .venv/bin/activate
-          if [[ "${{ matrix.image }}" == "dfuchs/alma-8-ansible" ]]; then
+          if [[ "${{ matrix.image }}" == "dfuchs/did-alma:8-extra" ]]; then
             pip install "ansible-core<2.17" ansible-lint molecule molecule-plugins[docker] docker
           else
             pip install ansible-core ansible-lint molecule molecule-plugins[docker] docker
