@@ -8,7 +8,7 @@ lint: |
   ansible-lint .
 platforms:
   - name: instance
-    image: ${MOLECULE_IMAGE:-dfuchs/alma-9-ansible}:latest
+    image: ${MOLECULE_IMAGE:-dfuchs/did-alma:9-extra}
     override_command: false
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
