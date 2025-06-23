@@ -17,6 +17,6 @@ repos:
         args: ['-d relaxed']
 
   - repo: https://github.com/google/yamlfmt.git
-    rev: v0.16.0
+    rev: v0.17.0
     hooks:
       - id: yamlfmt
