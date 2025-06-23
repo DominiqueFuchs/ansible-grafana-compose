@@ -7,7 +7,7 @@ on:
       - main
     paths-ignore:
       - 'README.md'
-      - '.gitignore'
+      - '.*'
 
 jobs:
   molecule:
